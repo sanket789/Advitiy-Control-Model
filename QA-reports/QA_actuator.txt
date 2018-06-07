@@ -1,12 +1,17 @@
 Quality Assurance Report
-
+--------------------------------------------------------------------------------
 Actuator.py
+
+===========================================================================================================================
 
 QA requested by: Sanket Chirame
 Date:	20/5/2018
 Reviewer: Vedant
-Permanent links:1.	
-				2.
-				3.	
-				4.
+Permanent links:
+	1.Code: https://github.com/sanket789/Advitiy-Control-Model/blob/ea602771aaf4e1134dace6d2b5abe7a14b283be6/actuator.py
+	2.Test-code: https://github.com/sanket789/Advitiy-Control-Model/blob/ea602771aaf4e1134dace6d2b5abe7a14b283be6/test_actuator.py
+	3. Readme file: https://github.com/sanket789/Advitiy-Control-Model/tree/ea602771aaf4e1134dace6d2b5abe7a14b283be6/README	
+	
+
+				
 
