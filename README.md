@@ -1,14 +1,25 @@
 # Advitiy-Control-Model
 
-main.py : contains main loop of the simulation
+`main.py` : contains main loop of the simulation
 
-constants.py : contains all constants
+`constants.py` : contains all constants
 
-frames.py : contains frame conversions
+`frames.py` : contains frame conversions
 
-qnv.py : contains functions of attitude kinematics
+`qnv.py` : contains functions of attitude kinematics
 
-satellite.py : contains declaration of satellite object
+`satellite.py` : contains declaration of satellite object
+
+`constants_1U.py`: contains constants for 1U satellite simulation
+
+`constants_2U.py`: contains constants for 2U satellite simulations
+
+`dynamics.py` : contains quaternion kinematics equation and euler dynamics equation for body-ecif frames
+
+`getorbitdata.py` : contains code for generating position and velocity data for orbit in eci frame using SGP4 model
+
+`test_--.py` : The test codes for respective .py files.
+
 
 Python Code to use IGRF
 ```
