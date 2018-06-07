@@ -1,0 +1,12 @@
+Quality Assurance Report
+
+Actuator.py
+
+QA requested by: Sanket Chirame
+Date:	20/5/2018
+Reviewer: Vedant
+Permanent links:1.	
+				2.
+				3.	
+				4.
+
