@@ -142,25 +142,22 @@ def wBIb2wBOb(v_w_BI_b,v_q_BO,v_w_IO_o):
 
 
 
-'''
-
-def ned2ecef(x,lat,lon):
+def ned2ecef(v,lat,lon):
 	#rotate vector from North-East-Down frame to ecef
 	# lat should be -90 to 90
 	# lon should be 0 to 360
-	v = np.array([-x[2], -x[0], x[1]]) #convert to spherical polar r theta phi
 	
-	theta = -lat + 90. #in degree, polar angle (co-latitude)
-	phi = lon #in degree, azimuthal angle
+	phi = -lat + 90. #in degree, polar angle (co-latitude)
+	theta = lon #in degree, azimuthal angle
 	theta = radians(theta)
 	phi = radians(phi)
 
-	DCM = np.array([[sin(theta)*cos(phi), cos(theta)*cos(phi), -sin(phi)],\
-		[sin(theta)*sin(phi), cos(theta)*sin(phi), cos(phi)],\
-		[cos(theta), -sin(theta), 0.]]) #for spherical to cartesian
+	m_DCM_n2e = np.array([[ -cos(theta)*cos(phi),	-sin(phi),	-sin(theta)*cos(phi)],
+						[	-cos(theta)*sin(phi),	cos(phi),	-sin(theta)*sin(phi)],
+						[	sin(theta),	0.0,	-cos(theta)]])
+	
 
-	y = np.dot(DCM,v)
+	y = np.dot(m_DCM_n2e,v)
 
 	return y
 
-'''
