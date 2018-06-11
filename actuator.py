@@ -1,5 +1,5 @@
 import numpy as np
-from constants_1U import RESISTANCE, INDUCTANCE, PWM_AMPLITUDE, PWM_FREQUENCY
+from constants_1U import RESISTANCE, INDUCTANCE, PWM_AMPLITUDE, PWM_FREQUENCY, CONTROL_STEP
 import math
 
 
@@ -38,3 +38,24 @@ def lrPWM(v_duty_cycle,v_i_prev,v_t_prev,t):
 	
 
 	return v_i_app
+
+
+def getCurrentList(h,v_duty_cycle):
+	'''
+		This functions returns current list for some time
+	'''
+	
+	N = CONTROL_STEP
+	t = np.linspace(0,CONTROL_STEP,N)
+	m_i_app = np.zeros((N,4))
+	for i in range(1,N):
+		for k in range(3):
+			if ((math.fmod(t[i],T) - np.sign(v_duty_cycle[k])*v_duty_cycle[k]*T) >= 0
+			 and (math.fmod(t[i],T) - np.sign(v_duty_cycle[k])*v_duty_cycle[k]*T)<h) or math.fmod(t[i],T) < h:
+			v_t_prev[k] = t[i-1]
+			v_i_prev[k] = m_i_app[i-1,k+1]
+
+		m_i_app[i,0] = t[i]
+		m_i_app[i,1:4] = lrPWM(v_duty_cycle,v_i_prev,v_t_prev,t[i])
+			
+	return m_i_app
