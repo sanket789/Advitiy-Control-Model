@@ -35,3 +35,7 @@ Python Code to use IGRF
   #lat : latitude
   #lon : longitude
 ```
+Matlab code for IGRF
+1. Run `getLLA.py` to obtain Lattitude-Longitude-ALtitude from SGP data
+2. Run `mag_output_ned.m` to obtain NED frame magnetic field
+3. Run `magfield.py` to convert magnetic field components to ECIF
