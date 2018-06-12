@@ -2,7 +2,7 @@ import unittest	#testing library
 import numpy as np
 import actuator as act
 from ddt import ddt,file_data,unpack,data
-from constants_1U import PWM_AMPLITUDE, RESISTANCE, INDUCTANCE, PWM_FREQUENCY
+from constants_1U import PWM_AMPLITUDE, RESISTANCE, INDUCTANCE, PWM_FREQUENCY, CONTROL_STEP
 
 @ddt
 class TestResistorPWM(unittest.TestCase):
@@ -12,14 +12,14 @@ class TestResistorPWM(unittest.TestCase):
 		act.RESISTANCE = RESISTANCE 
 		result = act.resistorPWM(np.array([1.,1.,1.]),value)
 		expected = act.PWM_AMPLITUDE/act.RESISTANCE*np.array([1.,1.,1.])
-		print result, expected
+		#print result, expected
 		self.assertTrue(np.allclose(result,expected))
 	@data(0.1,1,5,83.5,500.89)
 	def test_100m_duty_cycle_2(self,value):	#100% duty cycle. 
 		act.RESISTANCE = RESISTANCE
 		result = act.resistorPWM(np.array([1.,-1.,1.]),value)
 		expected = PWM_AMPLITUDE/RESISTANCE*np.array([1.,-1.,1.])
-		print result, expected, RESISTANCE, act.RESISTANCE
+		#print result, expected, RESISTANCE, act.RESISTANCE
 
 		self.assertTrue(np.allclose(result,expected))
 	
@@ -52,6 +52,27 @@ class TestLrPWM(unittest.TestCase):
 		
 		self.assertTrue(np.allclose(result,expected))
 
+@ddt
+class TestGetCurrentList(unittest.TestCase):
+	#data file: h , v_duty_cycle, current list with type
+	@file_data('test-data/test_current_list.json')
+	def test_current_list(self,value):
+		act.INDUCTANCE = 1.0
+		act.RESISTANCE = 10.0
+		act.PWM_FREQUENCY = 1.0
+		act.CONTROL_STEP = 2.0
+		h = np.asarray(value[0])
+		v_duty_cycle = np.asarray(value[1])
+		expected = np.asarray(value[2])
+		
+		result = act.getCurrentList(h,v_duty_cycle)
+		
+		
+		self.assertTrue(np.allclose(result,expected))
+		act.INDUCTANCE = INDUCTANCE
+		act.RESISTANCE = RESISTANCE
+		act.PWM_FREQUENCY = PWM_FREQUENCY
+		act.CONTROL_STEP = CONTROL_STEP
 if __name__=='__main__':
-	unittest.main(verbosity=2)
+	unittest.main(verbosity=1)
 	
