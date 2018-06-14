@@ -2,11 +2,11 @@ import numpy as np
 from constants_1U import RESISTANCE, INDUCTANCE, PWM_AMPLITUDE, PWM_FREQUENCY, CONTROL_STEP
 import math
 
-def leq(a, b, rel_tol=1e-12, abs_tol=0.0):
+def leq(a, b, rel_tol=1e-12, abs_tol=1e-12):
 	'''
 		Function for comparison of floats, returns true if a<=b upto the tolerance
 	'''
-	return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol) or (a < b)
+	return abs(a-b) <= abs_tol or (a < b)
 
 def resistorPWM(v_duty_cycle,t):
 	'''
@@ -18,6 +18,7 @@ def resistorPWM(v_duty_cycle,t):
 	T = 1/PWM_FREQUENCY
 	v_i_app = np.array([0.,0.,0.])
 	for k in range(3):
+		#condition: t < duty*T
 		if math.fmod(t,T) < math.fabs(v_duty_cycle[k])*T:
 			v_i_app[k] = np.sign(v_duty_cycle[k])*PWM_AMPLITUDE/RESISTANCE
 		else:
@@ -50,8 +51,8 @@ def lrPWM(v_duty_cycle,v_i_prev,v_t_prev,t):
 
 def getCurrentList(h,v_duty_cycle):
 	'''
-		This functions returns current list for some time. Cycle is defined such that time corresponding to rising or falling edge 
-		is considered in previous cycle. 
+		This functions returns current list for t=0 to t=CONTROL_STEP. Cycle is defined such that time corresponding to 
+		rising or falling edge is considered in previous cycle. 
 	'''
 	T = 1/PWM_FREQUENCY
 	N = int(CONTROL_STEP/h)
@@ -62,8 +63,11 @@ def getCurrentList(h,v_duty_cycle):
 
 	v_i_prev = np.array([0.,0.,0.])
 	v_t_prev = np.array([0.,0.,0.])
-
+	
 	for i in range(1,N):
+		if math.fmod(i,N/100.) == 0: 
+			print 100*i/N ,"%"," current list done"
+
 		for k in range(3):
 			#condition 1: (at high -> low)	t - duty*T > 0 and t - duty*T <=h  or
 			#condition 2: (at low -> high)	0 < t and t <= h
