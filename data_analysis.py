@@ -2,8 +2,40 @@ import numpy as np
 import matplotlib.pyplot as plt
 import qnv
 import os
-os.chdir('Logs/polar-identity-no-dist')
 
+os.chdir('Logs')
+
+state_DC = np.genfromtxt('Actuator_state/state_DC_33_.csv',delimiter=",")
+print "done"
+state_PWM = np.genfromtxt('Actuator_state/state_PWM_33_.csv',delimiter=",")
+print "done"
+curr = np.genfromtxt('Actuator_state/current_33_.csv',delimiter=",")
+#torque_DC = np.genfromtxt('test_actuator_DC/torque.csv',delimiter=",")
+#torque_LRPWM = np.genfromtxt('test_actuator_LRPWM/torque.csv',delimiter=",")
+
+
+
+N = np.shape(curr)[0]
+euler_DC = np.zeros((N,3))
+euler_PWM = np.zeros((N,3))
+error = np.zeros((N,3))
+
+
+for i in range(N):
+	
+	euler_DC[i,:] = qnv.quat2euler(state_DC[i,0:4])
+	euler_PWM[i,:] = qnv.quat2euler(state_PWM[i,0:4])
+	
+	error[i,:] = abs(euler_DC[i,:] - euler_PWM[i,:])#100.*np.divide(abs(euler_DC[i,:] - euler_LRPWM[i,:]),euler_LRPWM[i,:])
+		
+fig, axes = plt.subplots(nrows=2)
+axes[0].plot(curr[0:N,0],error[0:N,0])
+
+#axes[2].plot(time,error_LRPWM[:,0])
+plt.show()
+
+
+'''
 time = np.genfromtxt('time.csv',delimiter=",")
 v_state = np.genfromtxt('state.csv',delimiter=",")
 v_q_BO = np.genfromtxt('q_BO.csv',delimiter=",")
@@ -66,4 +98,4 @@ plt.title("wBIB in degrees")
 plt.legend()
 plt.show()
 
-
+'''

@@ -14,13 +14,12 @@ import actuator as act
 
 #Read position, velocity, sun-vector in ECIF from data file. temp variable for entire file
 m_sgp_output_i = np.genfromtxt('sgp_output.csv', delimiter=",")	#position velocity data in  ecif frame SI
-
 m_mag_output_i = np.genfromtxt('mag_output_i.csv',delimiter=",")		#magnetic field data in ecif : nano-tesla
 
 #define simulation parameters
 t0 = 0.		#start time
 tf = 0.2	#simulation time in seconds
-h = 1.666e-6		#step size of integration in seconds
+h = 1.666e-6		#step size of integration in seconds also sampling time for current
 N = int((tf-t0)/MODEL_STEP)
 #initialize empty matrices
 m_state = np.zeros((int(MODEL_STEP*N/h),7))	#state matrix
@@ -33,17 +32,11 @@ m_state[0,:] = v_state_0.copy()
 
 #Make satellite object
 Advitiy = satellite.Satellite(m_state[0,:],t0)
-print int(MODEL_STEP*N/h) 
+ 
 #simulation current
-duty = 0.43
-v_i_ctrl = (PWM_AMPLITUDE/RESISTANCE)*np.array([duty,duty,duty])
-v_duty_cycle = np.array([0.,0.,0.])
-for k in range(3):
-	if v_i_ctrl[k] > PWM_AMPLITUDE/RESISTANCE:	#to ensure duty cycle to be less than 1
-		v_i_ctrl[k] = PWM_AMPLITUDE/RESISTANCE
-	v_duty_cycle[k] = v_i_ctrl[k]*RESISTANCE/PWM_AMPLITUDE	#ranges from 0. to 1.
-
-act.CONTROL_STEP = tf
+duty = 0.3	#between 0.0 to 1.0
+v_duty_cycle = np.array([duty,duty,duty])
+v_i_ctrl = (PWM_AMPLITUDE/RESISTANCE)*v_duty_cycle.copy()
 
 os.chdir('Logs/Actuator_state')
 foo = str(v_duty_cycle[0])[2:]
@@ -51,8 +44,6 @@ foo = str(v_duty_cycle[0])[2:]
 m_current_list = act.getCurrentList(h,v_duty_cycle)
 np.savetxt('current_'+foo+'_.csv',m_current_list[:,0:2], delimiter=",")
 
-print v_duty_cycle,"v_duty_cycle"
-print v_i_ctrl , "v_i_ctrl"
 print 'current_'+foo+'_.csv','done'
 plt.plot(m_current_list[:,0],m_current_list[:,1])
 plt.plot(m_current_list[:,0],v_i_ctrl[0]*np.ones(len(m_current_list[:,0])),'r')
