@@ -70,7 +70,7 @@ AERO_DRAG = 2.2
 RHO = 0.218e-12
 
 #k_detumbling = 4*np.pi*(1+sin(radians(Inclination-11)))*Jmin/TimePeriod    #gain constant in B_dot controller (from book by F. Landis Markley)
-k_detumbling = 0.1
+k_detumbling = 1.5
 print k_detumbling , "B-dot constant"
 
 
