@@ -57,8 +57,6 @@ class Satellite:
 
 		return self.v_dist_b
 
-
-
 	def setControl_b(self,v_control):	#set control torque in body
 		self.v_control_b = v_control.copy()
 
@@ -81,21 +79,24 @@ class Satellite:
 		v_sun_o = fs.ecif2orbit(self.v_pos_i,self.v_vel_i,self.v_sun_i)
 		return	v_sun_o
 
-	def getMag_o(self):	#return mag in orbit
-		v_mag_o = fs.ecif2orbit(self.v_pos_i,self.v_vel_i,self.v_mag_i)
-		return	v_mag_o
-
+	def getMag_i(self):	#return mag in orbit
+		#v_mag_o = fs.ecif2orbit(self.v_pos_i,self.v_vel_i,self.v_mag_i)
+		return	self.v_mag_i
+	
 	def setSun_b_m(self,v_sv_b_m):	#set sunsensor measurement in body
 		self.v_sun_b_m = v_sv_b_m.copy()
-
-	def setMag_b_m(self,v_mag_b_m):	#set mag measurement in body
-		self.v_mag_b_m = v_mag_b_m.copy()
-
 	def getSun_b_m(self):	#return sunsensor measurement in body
 		return self.v_sun_b_m
+	
+	def setMag_b_m_c(self,v_mag_b_m):  #set current mag measurement in body
+		self.mag_b_m_c = v_mag_b_m.copy()
+	def setMag_b_m_p(self,v_mag_b_m):	#set previous mag measurement in body
+		self.mag_b_m_p = v_mag_b_m.copy()
 
-	def getMag_b_m(self):	#return mag measurement in body
-		return self.v_mag_b_m
+	def getMag_b_m_c(self):	#return mag measurement in body
+		return self.mag_b_m_c
+	def getMag_b_m_p(self):	#return mag measurement in body
+		return self.mag_b_m_p
 
 	def setQUEST(self,v_q_BO_m):	#set quest quaternion
 		self.quatEstimate = v_q_BO_m.copy()
