@@ -19,6 +19,12 @@ R_SUN = 695500000.0 #Radius of the Sun in meters
 LINE1 = ('1 41783U 16059A   18093.17383152  .00000069  00000-0  22905-4 0  9992') #Insert TLE Here
 LINE2 = ('2 41783  98.1258 155.9141 0032873 333.2318  26.7186 14.62910114 80995') 
 
+Incl = LINE2[8:16]
+Inclination = float("".join(map(str, Incl)))
+TPer = LINE2[52:63]
+TiPer = float("".join(map(str, TPer)))
+TimePeriod = 86400/TiPer
+
 EPOCH = dt.datetime(2018, 4, 03, 12, 50, 19)	#date of epoch of TLE t=0 -- in future should be extracted from TLE
 EQUINOX = dt.datetime(2018, 3, 20, 13, 05, 00)	#day of equinox
 STEPRUT = 1.002738 #sidereal time = stperut * universal time
@@ -63,6 +69,8 @@ r_COG_2_COM_b = np.array([-0.067e-2,-0.58e-2,-0.067e-2])
 AERO_DRAG = 2.2
 RHO = 0.218e-12
 
-
+#k_detumbling = 4*np.pi*(1+sin(radians(Inclination-11)))*Jmin/TimePeriod    #gain constant in B_dot controller (from book by F. Landis Markley)
+k_detumbling = 0.1
+print k_detumbling , "B-dot constant"
 
 
