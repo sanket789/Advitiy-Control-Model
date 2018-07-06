@@ -46,15 +46,15 @@ v_Az = np.array([0.,0.,0.01])	#area vector perpendicular to z-axis in m^2
 #--------Simulation constants
 CONTROL_STEP = 2.0	#control cycle time period in second
 MODEL_STEP = 0.1	#step size in environmental data in seconds
-#--------Magnetorquer parameters
+#--------Magnetorquer parameters---(all values according to Advitiy_ADCS_BDR)
 INDUCTANCE = 68e-3	#Inductance of torquer in Henry
-RESISTANCE = 107.0	#Resistance of torquer	in Ohm
-PWM_FREQUENCY = 1e3 	#frequency of PWM signal 
+RESISTANCE = 107.8 #Resistance of torquer	in Ohm
+PWM_FREQUENCY = 10e3	#frequency of PWM signal 
 PWM_AMPLITUDE = 3.3	#PWM amplitude in volt
-
-TORQUER_Ax = 0.07**2	#Area of torquer monted on y-z plane
-TORQUER_Ay = 0.07**2	#Area of torquer monted on x-z plane
-TORQUER_Az = 0.07**2	#Area of torquer monted on x-y plane
+N_TORQUER = 450		#number turns in torquer 
+TORQUER_Ax = 0.07**2	#Area of torquer mounted on y-z plane
+TORQUER_Ay = 0.07**2	#Area of torquer mounted on x-z plane
+TORQUER_Az = 0.07**2	#Area of torquer mounted on x-y plane
 
 #Disturbance model constants
 SOLAR_PRESSURE = 4.56e-6	#in N/m^2
