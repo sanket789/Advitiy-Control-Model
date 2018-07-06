@@ -133,3 +133,4 @@ def theta2J(t):
 	t6 = t[5]
 	return np.array([[t1,t2,t3],[t2,t4,t5],[t3,t5,t6]])
 '''
+
