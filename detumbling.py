@@ -1,7 +1,7 @@
 import numpy as np
 import satellite
 import disturbance_1U as dist
-from constants_1U import MODEL_STEP, LINE1, LINE2, G, m_INERTIA, M_EARTH
+from constants_1U import MODEL_STEP, LINE1, LINE2, G, m_INERTIA, M_EARTH,k_detumbling
 from dynamics import x_dot
 import frames as fs
 import solver as sol
@@ -9,34 +9,35 @@ import os
 import qnv
 import math
 import detumbling_con as detcon
+import time
+
 #import actuator
 
 #Read position, velocity, sun-vector, magnetic field (in nanoTeslas) in ECIF from data file
+t1 = time.time()
+m_sgp_output_i = np.genfromtxt('sgp_output.csv', delimiter=",")
+m_si_output_i = np.genfromtxt('si_output.csv',delimiter=",")
+m_light_output = np.genfromtxt('light_output.csv',delimiter=",")
+m_magnetic_field_i = 1e-9*np.genfromtxt('mag_output_i.csv',delimiter=",") 
 
-m_sgp_output_temp_i = np.genfromtxt('sgp_output.csv', delimiter=",")
-m_si_output_temp_i = np.genfromtxt('si_output.csv',delimiter=",")
-m_light_output_temp = np.genfromtxt('light_output.csv',delimiter=",")
-m_magnetic_field_temp_i = np.genfromtxt('mag_output_i.csv',delimiter=",") 
+#count = 0 # to count no. of transitions from light to eclipses
+#init,end = 0,500
 
-count = 0 # to count no. of transitions from light to eclipses
-init,end = 0,500
+t0 = m_sgp_output_i[0,0]
+tf = m_sgp_output_i[-1,0]	#simulation time in seconds
 
-t0 = m_sgp_output_temp_i[init,0]
-tf = m_sgp_output_temp_i[end,0]	#simulation time in seconds
-
-h = 0.1		#step size of integration in seconds
+h = 0.01		#step size of integration in seconds
 N = int((tf-t0)/MODEL_STEP)+1
 
 #extract init to end data from temp file
-m_sgp_output_i = m_sgp_output_temp_i[init:(init+N),:].copy()
-m_si_output_i = m_si_output_temp_i[init:(init+N),:].copy()
-m_light_output = m_light_output_temp[init:(init+N),:].copy()
-m_magnetic_field_i = 1e-9*m_magnetic_field_temp_i[init:(init+N),:].copy()
-print N ,'Simulation for ' ,MODEL_STEP*(N-1),'seconds'
+#m_sgp_output_i = m_sgp_output_temp_i[init:(init+N),:].copy()
+#m_si_output_i = m_si_output_temp_i[init:(init+N),:].copy()
+#m_light_output = m_light_output_temp[init:(init+N),:].copy()
+#m_magnetic_field_i = 1e-9*m_magnetic_field_temp_i[init:(init+N),:].copy()
 
 #Initial conditions for simulation
 v_q0_BO = np.array([1.,0.,0.,0.])	#unit quaternion initial condition
-v_w0_BO_b = np.array([0.1,0.0,0.0])	#initial angular velocity of body wrt orbit frame in body frame
+v_w0_BO_b = np.array([0.12,0.0,0.0])	#initial angular velocity of body wrt orbit frame in body frame
 #initialize empty matrices
 m_state = np.zeros((N,7))
 m_q_BO = np.zeros((N,4))
@@ -64,6 +65,8 @@ m_euler_BO[0,:] = qnv.quat2euler(v_q0_BO)
 Advitiy = satellite.Satellite(m_state[0,:],t0)
 #Advitiy.setControl_b(np.array([0.,0.,0.]))	
 Advitiy.setDisturbance_b(np.array([0.,0.,0.]))
+print "k_detumbling =  ",k_detumbling
+print 'Simulation for ' ,MODEL_STEP*(N-1),'seconds'
 
 #-------------Main for loop---------------------
 for  i in range(0,N-1):
@@ -122,14 +125,14 @@ for  i in range(0,N-1):
 	
 	m_w_BO_b[i+1,:] = fs.wBIb2wBOb(v_state_next[4:7],m_q_BO[i+1,:],v_w0_IO_o)
 	m_euler_BO[i+1,:] = qnv.quat2euler(m_q_BO[i+1,:])
-
+t2 = time.time()
 #save the data files
 os.chdir('Logs-Detumbling-sanket/')
-os.mkdir('SSO-Identity-no-dist-rate-0_1-k-1_5-try')
-os.chdir('SSO-Identity-no-dist-rate-0_1-k-1_5-try')
+os.mkdir('SSO-Identity-no-dist-rate-0_1-k-0_011-200min_NEG')
+os.chdir('SSO-Identity-no-dist-rate-0_1-k-0_011-200min_NEG')
 np.savetxt('Bdifferenceb.csv',m_Bdifference_b, delimiter=",")
-np.savetxt('position.csv',m_sgp_output_i[:,1:4], delimiter=",")
-np.savetxt('velocity.csv',m_sgp_output_i[:,4:7], delimiter=",")
+#np.savetxt('position.csv',m_sgp_output_i[:,1:4], delimiter=",")
+#np.savetxt('velocity.csv',m_sgp_output_i[:,4:7], delimiter=",")
 np.savetxt('time.csv',m_sgp_output_i[:,0] - t0, delimiter=",")
 np.savetxt('w_BOB.csv',m_w_BO_b, delimiter=",")
 np.savetxt('q_BO.csv',m_q_BO, delimiter=",")
@@ -137,6 +140,7 @@ np.savetxt('state.csv',m_state, delimiter=",")
 np.savetxt('euler.csv',m_euler_BO, delimiter=",")
 np.savetxt('Magneticmoment.csv',m_magMoment_b,delimiter=",")
 np.savetxt('Controltorque.csv',m_control_torque_b,delimiter=",")
-np.savetxt('Moment of Inertia', m_INERTIA, delimiter=",")
+np.savetxt('Moment-of-Inertia', m_INERTIA, delimiter=",")
 
+print "Time taken = ",(t2-t1)/3600.,"hours"
 print "Simulation over!!"
