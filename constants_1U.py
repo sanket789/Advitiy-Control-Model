@@ -40,8 +40,8 @@ Ixy = 0.00000437
 Iyz = -0.00000408
 Ixz = 0.00000118
 
-m_INERTIA = np.array([[Ixx, Ixy, Ixz], [Ixy, Iyy, Iyz], [Ixz, Iyz, Izz]])	#actual inertia
-#m_INERTIA = 0.001*np.array([[1.0,0.,0.],[0.,1.,0.],[0.,0.,1.]])	#identity inertia
+#m_INERTIA = np.array([[Ixx, Ixy, Ixz], [Ixy, Iyy, Iyz], [Ixz, Iyz, Izz]])	#actual inertia
+m_INERTIA = 0.001*np.array([[1.0,0.,0.],[0.,1.,0.],[0.,0.,1.]])	#identity inertia
 m_INERTIA_inv = np.linalg.inv(m_INERTIA)	#inverse of inertia matrix
 
 #Side panel areas
@@ -61,7 +61,7 @@ PWM_AMPLITUDE = 3.3	#PWM amplitude in volt
 TORQUER_Ax = 0.07**2	#Area of torquer monted on y-z plane
 TORQUER_Ay = 0.07**2	#Area of torquer monted on x-z plane
 TORQUER_Az = 0.07**2	#Area of torquer monted on x-y plane
-
+N_TORQUER = 450	#number turns in torquer 
 #Disturbance model constants
 SOLAR_PRESSURE = 4.56e-6	#in N/m^2
 REFLECTIVITY = 0.2
@@ -70,7 +70,7 @@ AERO_DRAG = 2.2
 RHO = 0.218e-12
 
 #k_detumbling = 4*np.pi*(1+sin(radians(Inclination-11)))*Jmin/TimePeriod    #gain constant in B_dot controller (from book by F. Landis Markley)
-k_detumbling = 1.5
-print k_detumbling , "B-dot constant"
+k_detumbling = -0.011
+
 
 
