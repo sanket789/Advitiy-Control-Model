@@ -1,0 +1,29 @@
+Quality Assurance Report
+--------------------------------------------------------------------------------
+Frames.py
+
+===========================================================================================================================
+
+Code written by: Anant Joshi and Sanket Chirame
+QA performed by: Sanket Chirame
+Date of QA: 9/5/2018
+1. Latlon function:
+a. Changed all numbers to float.
+b. 180 degree longitude was returned as pi instead of 180
+2. Ecif2ecef:
+a. There was mistake in calculation of time. The variable ‘t’ denotes the time since
+the launch of satellite. But ecif and ecef frames are aligned at equinox. Thus time
+from equinox to launch needs to be added in ‘t’
+3. Import statement was importing entire constants file. Changed it to import only required
+variables.
+4. Added comments for better explanation.
+
+===========================================================================================================================
+
+QA requested by: Sanket Chirame
+Date:	28/7/2018
+Reviewer: 
+Permanent links:
+	1.Code: https://github.com/sanket789/Advitiy-Control-Model/blob/4c71b963f42e339cbf36fada47963bb7b6de1fef/frames.py
+	2.Test-code: https://github.com/sanket789/Advitiy-Control-Model/blob/4c71b963f42e339cbf36fada47963bb7b6de1fef/test_frames.py
+	3.Readme file: https://github.com/sanket789/Advitiy-Control-Model/blob/e6d2aad4cef73717738af751d4c2117fa2cced3c/README/RM_frames_02.pdf
