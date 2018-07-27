@@ -167,6 +167,19 @@ class Test_wBIB_2_wBOB(unittest.TestCase):
 		result = fr.wBIb2wBOb(w_BIB,qBO,v_w_IO_o)
 		expected = qnv.quatRotate(qBO,v_w_IO_o)
 		self.assertTrue(np.allclose(result,expected)) 
+@ddt
+class Test_ned2ecef(unittest.TestCase):
+	'''
+		File data: [[v_ned],[lat,lon],v_ecef_expected]
+	'''
+	@file_data('test-data/test_ned_2_ecef.json')
+	def test_ned_2_ecef(self,value):
+		v_ned = np.asarray(value[0])
+		lat = value[1][0]
+		lon = value[1][1]
+		v_ecef_expected = np.asarray(value[2])
+		v_ecef_result = fr.ned2ecef(v_ned,lat,lon)
+		self.assertTrue(np.allclose(v_ecef_result,v_ecef_expected)) 
 
 if __name__=='__main__':
-	unittest.main(verbosity=2)
+	unittest.main(verbosity=1)
