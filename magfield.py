@@ -7,7 +7,7 @@ import frames as fs
 '''
 m_mag_ned = np.genfromtxt('mag_output_ned.csv',delimiter=",")	#in nT
 m_LLA = np.genfromtxt('LLA.csv',delimiter=",")	#Lat and Lon in degrees and altitude in m (check frames.latlon for details)
-N = m_mag_ned.shape[0]
+N = m_mag_ned.shape[0]	#To get number of rows in array m_mag_ned
 m_mag_i = np.zeros([N,4])
 for k in range(N):
 	T = m_mag_ned[k,0]

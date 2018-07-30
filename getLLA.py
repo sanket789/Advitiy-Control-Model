@@ -34,5 +34,10 @@ for k in range(0,N):
 	m_LLA[k,0] = time
 	m_sgp_ecef[k,1:4] = v_ecef
 	m_LLA[k,1:4] = np.append(v_latlon,alt)
+
+#save LLA data to file
 np.savetxt('LLA.csv',m_LLA, delimiter=",")
+#save ecef data to the file
+np.savetxt('sgp_ecef.csv',m_sgp_ecef,delimiter=",")
+
 print "LLA done"
