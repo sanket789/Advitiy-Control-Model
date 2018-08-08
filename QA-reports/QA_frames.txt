@@ -24,6 +24,23 @@ QA requested by: Sanket Chirame
 Date:	28/7/2018
 Reviewer: 
 Permanent links:
-	1.Code: https://github.com/sanket789/Advitiy-Control-Model/blob/4c71b963f42e339cbf36fada47963bb7b6de1fef/frames.py
-	2.Test-code: https://github.com/sanket789/Advitiy-Control-Model/blob/4c71b963f42e339cbf36fada47963bb7b6de1fef/test_frames.py
-	3.Readme file: https://github.com/sanket789/Advitiy-Control-Model/blob/e6d2aad4cef73717738af751d4c2117fa2cced3c/README/RM_frames_02.pdf
+		1.Code: https://github.com/sanket789/Advitiy-Control-Model/blob/4c71b963f42e339cbf36fada47963bb7b6de1fef/frames.py
+		2.Test-code: https://github.com/sanket789/Advitiy-Control-Model/blob/4c71b963f42e339cbf36fada47963bb7b6de1fef/test_frames.py
+		3.Readme file: https://github.com/sanket789/Advitiy-Control-Model/blob/e6d2aad4cef73717738af751d4c2117fa2cced3c/README/RM_frames_02.pdf
+	
+QA suggestions:
+1) In readme file (RM_frames_02.pdf) add full stop after "body frame" in qBI2qBO(v_q_BI,v_pos_i,v_vel_i) output defination.
+2) For qBO2qBI(v_q_BO,v_pos_i,v_vel_i) in frames.py didn't implement transpose in DCMoi, so implement transpose.
+3) In frames.py, function "wBOb2wBIb(v_w_BO_b,v_q_BO,v_w_IO_o)", comment is wrong.
+4) Also add "wBOb2wBIb(v_w_BO_b,v_q_BO,v_w_IO_o)" function to readme file.
+
+Implementation:
+1) Implemented
+2) Rejected: Transpose is already taken
+3) Implemented
+4) Implemented: README file updated to version 3
+Post-QA permanent links:	
+		1.Code: https://github.com/sanket789/Advitiy-Control-Model/blob/79b44066111e595834f8bde7f4c36a3ede6fb427/frames.py
+		2.Test Code: https://github.com/sanket789/Advitiy-Control-Model/blob/79b44066111e595834f8bde7f4c36a3ede6fb427/test_frames.py
+		3.Readme File: https://github.com/sanket789/Advitiy-Control-Model/blob/79b44066111e595834f8bde7f4c36a3ede6fb427/README/RM_frames_03.pdf
+		
