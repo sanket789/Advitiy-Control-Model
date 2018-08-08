@@ -167,8 +167,8 @@ def ned2ecef(v,lat,lon):
 	return y
 
 def wBOb2wBIb(v_w_BO_b,v_q_BO,v_w_IO_o):
-	#input: angular velocity of body wrt ecif in body frame, unit quaternion which rotates orbit vector to body frame
+	#input: angular velocity of body wrt orbit in body frame, unit quaternion which rotates orbit vector to body frame
 	#		angular velocity of ecif wrt orbit frame in orbit frame
-	#output: angular velocity of body frame wrt orbit frame in body frame
+	#output: angular velocity of body frame wrt eci frame in body frame
 	
 	return v_w_BO_b - qnv.quatRotate(v_q_BO,v_w_IO_o)
